@@ -1,0 +1,26 @@
+// 1
+datasource db {
+  provider = "sqlite" 
+  url      = "file:./dev.db"
+}
+
+// 2
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 3
+model Live {
+    id            String      @id @default(cuid())
+    title         String
+    description   String
+    questionnaire Questionnaire?
+}
+
+model Questionnaire {
+    id            String      @id @default(cuid())
+    title         String
+    description   String
+    liveId        String
+    live          Live    @relation(fields: [liveId], references: [id])
+}

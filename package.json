@@ -1,0 +1,22 @@
+{
+  "name": "prisma-one-to-one",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^2.12.1",
+    "graphql": "^15.4.0",
+    "graphql-yoga": "^1.18.3"
+  },
+  "resolutions": {
+    "graphql": "^15.4.0"
+  },
+  "devDependencies": {
+    "@prisma/cli": "^2.12.1"
+  }
+}
