@@ -31,7 +31,7 @@
       "tag": "CreateField",
       "model": "Live",
       "field": "id",
-      "type": "Int",
+      "type": "String",
       "arity": "Required"
     },
     {
@@ -68,7 +68,7 @@
         "directive": "default"
       },
       "argument": "",
-      "value": "autoincrement()"
+      "value": "cuid()"
     },
     {
       "tag": "CreateField",
@@ -99,7 +99,7 @@
       "tag": "CreateField",
       "model": "Questionnaire",
       "field": "id",
-      "type": "Int",
+      "type": "String",
       "arity": "Required"
     },
     {
@@ -136,7 +136,7 @@
         "directive": "default"
       },
       "argument": "",
-      "value": "autoincrement()"
+      "value": "cuid()"
     },
     {
       "tag": "CreateField",
@@ -156,7 +156,7 @@
       "tag": "CreateField",
       "model": "Questionnaire",
       "field": "liveId",
-      "type": "Int",
+      "type": "String",
       "arity": "Required"
     },
     {
