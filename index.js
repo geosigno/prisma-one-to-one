@@ -1,10 +1,9 @@
-const { GraphQLServer } = require('graphql-yoga');
+const { ApolloServer, gql } = require('apollo-server');
 const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
 
-// 1
-const typeDefs = `
+const typeDefs = gql`
     type Query {
         lives: [Live]
         questionnaires: [Questionnaire!]!
@@ -23,7 +22,31 @@ const typeDefs = `
         description: String
         live: Live
     }
-`
+`;
+
+const resolvers = {
+    Query: {
+      lives: async () => {
+          const lives = await prisma.live.findMany();
+          return lives;
+      },
+      questionnaires: async () => {
+          const questionnaires = await prisma.questionnaire.findMany();
+          return questionnaires;
+      }
+    },
+    Questionnaire: {
+      live: async (node) => {
+          return await prisma.questionnaire.findUnique({ where: { id: node.id }}).live()
+      }
+    },
+    Live: {
+      questionnaire: async (node) => {
+          return await prisma.live.findUnique({ where: { id: node.id }}).questionnaire()
+      }
+    }
+  }
+
 async function main() {
     const newLive = await prisma.live.create({
         data: {
@@ -41,36 +64,8 @@ async function main() {
 }
 main();
 
-// 2
-const resolvers = {
-  Query: {
-    lives: async () => {
-        const lives = await prisma.live.findMany();
-        return lives;
-    },
-    questionnaires: async () => {
-        const questionnaires = await prisma.questionnaire.findMany();
-        return questionnaires;
-    }
-  },
-  Questionnaire: {
-    live: async (node) => {
-        return await prisma.questionnaire.findUnique({ where: { id: node.id }}).live()
-    }
-  },
-  Live: {
-    questionnaire: async (node) => {
-        return await prisma.live.findUnique({ where: { id: node.id }}).questionnaire()
-    }
-  }
-}
+const server = new ApolloServer({ typeDefs, resolvers });
 
-// 3
-const server = new GraphQLServer({
-  typeDefs,
-  resolvers,
-  context: {
-    prisma,
-  }
-})
-server.start(() => console.log(`Server is running on http://localhost:4000`))
+server.listen().then(({ url }) => {
+  console.log(`🚀  Server ready at ${url}`);
+});
